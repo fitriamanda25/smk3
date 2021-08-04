@@ -1,6 +1,34 @@
-<? 
+<?  
   error_reporting(0); 
   include"setting.php";
+
+  if(!empty($_SESSION[SiswaID]))
+  {
+      include "index.php";
+  }
+
+  if(isset($_POST[TombolLogin]))
+  {
+    $siswa 	    = strip_tags($_POST[NIS]);
+    $password 	= strip_tags($_POST[Password]);;
+    
+    $qSiswa = "SELECT * FROM siswa WHERE siswa_nis = '$siswa' and siswa_password = '$password'";
+
+    $rSiswa = mysql_query($qSiswa, $conn) or die(mysql_error());
+
+    if(mysql_num_rows($rSiswa) != '0')
+    {
+        $aSiswa = mysql_fetch_array($rSiswa);
+    
+        $_SESSION[SiswaID]     = $aSiswa[siswa_id];
+        
+        header("location:index.php");
+    }
+    else
+    {
+        header("location:?msg=psw");
+    }
+  }
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +42,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title><?=$aConfig[config_nama];?></title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -40,20 +68,22 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <img src="img/<?=$aConfig[config_logo];?>" width="467">
+                            </div>
                             <div class="col-lg-6">
-                                <div class="p-5">
+                                <div class="p-5"> 
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4"><?=$aConfig[config_nama];?></h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="siswa" method="POST" onsubmit="return Login(this)">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input name="NIS" type="text" class="form-control form-control-siswa"
+                                                id="exampleInputNIS" aria-describedby="emailHelp"
+                                                placeholder="Masukan NIS...">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
+                                            <input name="Password" type="password" class="form-control form-control-siswa"
                                                 id="exampleInputPassword" placeholder="Password">
                                         </div>
                                         <div class="form-group">
@@ -63,24 +93,8 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </a>
-                                        <hr>
-                                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
+                                        <button type="submit" class="btn btn-primary btn-siswa btn-block" name="TombolLogin">Login</button>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -6,7 +6,7 @@
     $rConfig = mysql_query($qConfig, $conn) or die(mysql_error());
     $aConfig = mysql_fetch_array($rConfig);
 
-    $qWargaGlobal = "select * from `warga` where `warga_id` = '$_SESSION[WargaID]'";
-    $rWargaGlobal = mysql_query($qWargaGlobal, $conn) or die(mysql_error());
-    $aWargaGlobal = mysql_fetch_array($rWargaGlobal);
+    $qSiswaGlobal = "SELECT * from `siswa` where `siswa_id` = '$_SESSION[SiswaID]'";
+    $rSiswaGlobal = mysql_query($qSiswaGlobal, $conn) or die(mysql_error());
+    $aSiswaGlobal = mysql_fetch_array($rSiswaGlobal);
 ?>
